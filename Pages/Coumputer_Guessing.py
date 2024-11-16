@@ -19,7 +19,6 @@ if "low" not in st.session_state:
 st.session_state.guess_num=(st.session_state.high+st.session_state.low)//2
 
 #BINARY SEARCH
-
 st.header("Let's start")
 st.subheader("Think a number between 1 to 100")
 choice=st.selectbox(f"Is the number is {st.session_state.guess_num}",("Yes","Guess is greater than my number","Guess is less than my number"))

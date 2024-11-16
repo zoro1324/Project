@@ -13,32 +13,37 @@ if "think_num" not in st.session_state:
     st.session_state.min=1
     st.session_state.max=100
     st.session_state.count=0
+    st.session_state.tries=10
 
 low=st.session_state.min
 high=st.session_state.max
 
 st.subheader("Let's Begin")
+st.write(f"Number of remaining attempts:{st.session_state.tries}")
 guess_num=st.text_input(f"Enter your guess between {low} and {high}")
 if guess_num.isdigit():
     guess_num=int(guess_num)
-    st.session_state.count+=1
-    if guess_num==st.session_state.think_num:
-        st.write(f"Yes, The number is {guess_num}")
-        st.write(f"You found the number in {st.session_state.count} tries.")
-        if st.session_state.count<=7:
+    if st.session_state.tries>1:
+        if guess_num==st.session_state.think_num:
+            st.write(f"Yes, The number is {guess_num}")
+            st.write(f"You found the number in {st.session_state.count} tries.")
             st.success("You have won")
             st.balloons()
-        else:
-            st.write("You have lost next time complete with in 7 tries")
-
-    elif guess_num>st.session_state.think_num:
-        st.write("Your Guess is greater than coumputer's number")
-        st.session_state.max=guess_num
-        st.button("Next try")
-    elif guess_num<st.session_state.think_num:
-        st.write("Your Guess is less than coumputer's number")
-        st.session_state.min=guess_num
-        st.button("Next try")
+        elif guess_num>st.session_state.think_num:
+            st.write("Your Guess is greater than coumputer's number")
+            st.session_state.max=guess_num
+            st.button("Next try")
+            st.session_state.tries-=1
+        elif guess_num<st.session_state.think_num:
+            st.write("Your Guess is less than coumputer's number")
+            st.session_state.min=guess_num
+            st.session_state.tries-=1
+            st.button("Next try")
+    else:
+        st.write("You ran out of attempts, Better luck next time")
+        restrat=st.button("Restart")
+        if restrat:
+            st.rerun()
 else:
     if guess_num:
         st.write("Please enter a valid number.")
